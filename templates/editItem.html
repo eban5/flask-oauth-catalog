@@ -19,11 +19,6 @@
           <label for="description">Description:</label>
           <textarea class="form-control" maxlength="250" rows="5" name="description">{{item.description}}</textarea>
 
-          <!-- <div class="radio">
-            <label>
-              <input type="radio" name="category" id="category" value="Category" {%if item%}checked{%endif%}>Beverage
-            </label>
-          </div> -->
           <button type="submit" class="btn btn-warning" id="submit" type="submit">
           <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>Save</button>
           <a href = '{{url_for('showCategories')}}'>

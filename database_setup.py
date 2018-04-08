@@ -39,5 +39,24 @@ class Item(Base):
             'id' : self.id
         }
 
+class User(Base):
+    __tablename__ = 'user'
+
+    name = Column(String(80), nullable = False)
+    id = Column(Integer, primary_key = True)
+    email = Column(String(80), nullable = False)
+    picture = Column(String(500))
+
+    @property
+    def serialize(self):
+        # Serializable format
+        return {
+            'name'   : self.name,
+            'id'    : self.id,
+            'email' : self.email,
+            'picture' : self.picture
+        }
+
+
 engine = create_engine('sqlite:///categoryapp.db')
 Base.metadata.create_all(engine)

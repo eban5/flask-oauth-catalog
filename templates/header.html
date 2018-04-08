@@ -1,21 +1,23 @@
 <!-- <div class="row top-menu"> -->
-  <nav class="navbar navbar-dark bg-dark">
+<nav class="navbar navbar-dark bg-dark">
     <span class="navbar-brand mb-0 h1 text-thin">
-      <a href = '{{url_for('showCategories')}}'><h1>Catalog App</h1></a>
+      <div class="app-name"><a href = '{{url_for('showCategories')}}'><h1>Catalog App</h1></a></div>
     </span>
     <form class="form-inline my-2 my-lg-0">
-        <!-- <button type="button" class="btn btn-warning">Login</button> -->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="user-avatar">
+            <img id="avatar" src="/static/costanza.jpg">
+        </div>
+        <ul>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Art Vandalay
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <a class="dropdown-item" href = '{{url_for('showLogin')}}'>Login</a>
-          <a class="dropdown-item" href="#">Logout</a>
-        </div>
-      </li>
-
-      <img style="width: 28px;" src="{{ url_for('static', filename='blank_user.gif') }}">
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    {% if 'username' not in session %}
+                    <a class="dropdown-item" href="{{url_for('showLogin')}}">Login</a> {% else %}
+                    <a class="dropdown-item" href="{{url_for('gdisconnect')}}">Logout</a> {% endif %}
+                </div>
+            </li>
+        </ul>
     </form>
-
-  </nav>
+</nav>
