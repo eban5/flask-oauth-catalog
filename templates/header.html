@@ -1,16 +1,21 @@
 <!-- <div class="row top-menu"> -->
   <nav class="navbar navbar-dark bg-dark">
-    <span class="navbar-brand mb-0 h1 text-thin"><h1>Catalog App</h1></span>
-    <button type="button" class="btn btn-warning">Login</button>
+    <span class="navbar-brand mb-0 h1 text-thin">
+      <a href = '{{url_for('showCategories')}}'><h1>Catalog App</h1></a>
+    </span>
+    <form class="form-inline my-2 my-lg-0">
+        <!-- <button type="button" class="btn btn-warning">Login</button> -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Art Vandalay
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a class="dropdown-item" href = '{{url_for('showLogin')}}'>Login</a>
+          <a class="dropdown-item" href="#">Logout</a>
+        </div>
+      </li>
+
+      <img style="width: 28px;" src="{{ url_for('static', filename='blank_user.gif') }}">
+    </form>
+
   </nav>
-
-    <!-- <div class="col-md-6">
-        <a href="{{url_for('showCategories')}}">
-      <span class="glyphicon glyphicon-home" aria-hidden="true"></span>Show Catalog
-    </a>
-    </div> -->
-    <!-- <div class="col-md-6 text-right"> -->
-
-    <!-- </div> -->
-<!-- </div> -->
-
