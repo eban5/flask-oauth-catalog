@@ -4,6 +4,45 @@ body {
     color: #333333;
 }
 
+.alert {
+    padding: 10px;
+    color: #333333;
+    margin-bottom: 15px;
+}
+
+.alert-warning {
+    background: rgba(238, 214, 144, 0.25);
+    /* Yellow */
+}
+
+.alert-success {
+    background: rgba(46, 139, 87, 0.25);
+    /* SeaGreen */
+}
+
+.alert-info {
+    background: rgba(70, 130, 180, 0.25);
+    /* SteelBlue */
+}
+
+
+/* The close button */
+
+.closebtn {
+    margin-left: 15px;
+    color: #333333;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}
+
 
 textarea {
     font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -15,8 +54,10 @@ textarea {
     height: 50px;
 }
 
-dl, ol, ul {
-  margin-bottom: 0.5rem !important;
+dl,
+ol,
+ul {
+    margin-bottom: 0.5rem !important;
 }
 
 ul,
@@ -42,7 +83,7 @@ a {
 }
 
 .user-name {
-  margin: auto;
+    margin: auto;
 }
 
 .user-name a {
