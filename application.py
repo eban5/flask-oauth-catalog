@@ -226,7 +226,9 @@ def newItem(category_id):
     if request.method == 'POST':
         item = Item(
             name=request.form['name'],
-            description=request.form['description'], category_id=category_id)
+            description=request.form['description'],
+            category_id=category_id,
+            user_id = login_session['user_id'])
         session.add(item)
         session.commit()
         flash("New item %s created." % item.name)
