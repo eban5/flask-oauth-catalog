@@ -160,6 +160,7 @@ def gdisconnect():
         # response = make_response(json.dumps('Successfully disconnected.'), 200)
         # response.headers['Content-Type'] = 'application/json'
         # return response
+        flash("You have been successfully logged out.")
         return redirect('/catalog')
     else:
         response = make_response(json.dumps(
