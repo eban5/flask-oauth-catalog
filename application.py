@@ -24,20 +24,24 @@ CLIENT_ID = json.loads(
     open('client_secret.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "Catalog App"
 
-# Create anti-forgery state token
-
 
 @app.route('/login')
 def showLogin():
+    """
+    Takes the user to the login page.
+    """
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in xrange(32))
     login_session['state'] = state
-    # return "The current session state is %s" % login_session['state']
     return render_template('login.html', STATE=state)
 
 
 @app.route('/gconnect', methods=['POST'])
 def gconnect():
+    """
+    Gathers data from Google Sign In API and places it inside
+    a session variable.
+    """
     # Validate state token
     if request.args.get('state') != login_session['state']:
         response = make_response(json.dumps('Invalid state parameter.'), 401)
@@ -128,6 +132,9 @@ def gconnect():
 
 @app.route('/gdisconnect')
 def gdisconnect():
+    """
+    Deletes the user session variables and resets the session.
+    """
     access_token = login_session.get('access_token')
     if access_token is None:
         print 'Access Token is None'
@@ -138,8 +145,8 @@ def gdisconnect():
     print 'In gdisconnect access token is %s', access_token
     print 'User name is: '
     print login_session['username']
-    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' %
-    login_session['access_token']
+    url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % \
+        login_session['access_token']
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
     print 'result is '
@@ -150,9 +157,10 @@ def gdisconnect():
         del login_session['username']
         del login_session['email']
         del login_session['picture']
-        response = make_response(json.dumps('Successfully disconnected.'), 200)
-        response.headers['Content-Type'] = 'application/json'
-        return response
+        # response = make_response(json.dumps('Successfully disconnected.'), 200)
+        # response.headers['Content-Type'] = 'application/json'
+        # return response
+        return redirect('/catalog')
     else:
         response = make_response(json.dumps(
             'Failed to revoke token for given user.', 400))
@@ -183,13 +191,14 @@ def getUserID(email):
     except:
         return None
 
+
 # All categories
-
-
 @app.route('/')
 @app.route('/catalog')
 def showCategories():
-    # return "This page will show all my categories."
+    """
+    Show all categories in my catalog.
+    """
     categories = session.query(Category).all()
     return render_template('categories.html', categories=categories)
 
@@ -197,6 +206,9 @@ def showCategories():
 @app.route('/catalog/<int:category_id>')
 @app.route('/catalog/<int:category_id>/items')
 def showItems(category_id):
+    """
+    Show all items in a specified category.
+    """
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(Item).filter_by(category_id=category_id).all()
     return render_template('item.html', category=category, items=items)
@@ -205,6 +217,9 @@ def showItems(category_id):
 
 @app.route('/catalog/<int:category_id>/items/new', methods=['GET', 'POST'])
 def newItem(category_id):
+    """
+    Add a new item to a specified category.
+    """
     if 'username' not in login_session:
         return redirect('/login')
     if request.method == 'POST':
@@ -217,13 +232,14 @@ def newItem(category_id):
         return redirect(url_for('showItems', category_id=category_id))
     else:
         return render_template('newItem.html', category_id=category_id)
-        # return "This page is for making a new item item for \
-        # category % s" % category_id
 
 
 @app.route('/catalog/<int:category_id>/items/<int:item_id>/edit',
            methods=['GET', 'POST'])
 def editItem(category_id, item_id):
+    """
+    Edit the specified item in a specified category.
+    """
     if 'username' not in login_session:
         return redirect('/login')
     category = session.query(Category).filter_by(id=category_id).one()
@@ -240,12 +256,14 @@ def editItem(category_id, item_id):
     else:
         return render_template('editItem.html', category_id=category_id,
                                item=item)
-        # return "This page is for editing item %s" % item_id
 
 
 @app.route('/catalog/<int:category_id>/items/<int:item_id>/delete',
            methods=['GET', 'POST'])
 def deleteItem(category_id, item_id):
+    """
+    Delete a specified item within a specified category
+    """
     if 'username' not in login_session:
         return redirect('/login')
     category = session.query(Category).filter_by(id=category_id).one()
@@ -265,12 +283,18 @@ def deleteItem(category_id, item_id):
 
 @app.route('/catalog/JSON')
 def catalogJSON():
+    """
+    JSON endpoint for showing all categories.
+    """
     categories = session.query(Category).all()
     return jsonify(Categories=[r.serialize for r in categories])
 
 
 @app.route('/catalog/<int:category_id>/items/JSON')
 def categoryItemJSON(category_id):
+    """
+    JSON endpoint for showing all items in a specified category.
+    """
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(Item).filter_by(category_id=category_id).all()
     return jsonify(Items=[i.serialize for i in items])
