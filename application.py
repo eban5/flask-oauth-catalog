@@ -12,6 +12,10 @@ import requests
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
 
+"""
+Some code for authentication and authorization checks inspired by examples found in instructor notes. StackOverflow and the official Flask documentation were also used as guides when I got stuck, as well as the Udacity forums.
+"""
+
 app = Flask(__name__)
 
 engine = create_engine('sqlite:///categoryapp.db')
