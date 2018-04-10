@@ -119,6 +119,19 @@ def gconnect():
     login_session['picture'] = data['picture']
     login_session['email'] = data['email']
 
+    """
+    We need to create a user here if one doesn't already exist
+    in our database. This is crucial for authorization checks
+    to work. This code was inspired by instructor notes.
+    """
+    # Use the helper function for getting the user ID
+    user_id = getUserID(login_session['email'])
+    if not user_id:
+        # if the user doesn't exist yet, create one
+        user_id = createUser(login_session)
+    login_session['user_id'] = user_id
+
+
     output = ''
     output += '<h1>Welcome, '
     output += login_session['username']
@@ -235,7 +248,10 @@ def newItem(category_id):
             name=request.form['name'],
             description=request.form['description'],
             category_id=category_id,
-            user_id = login_session.get('user_id'))
+            user_id = login_session['user_id'])
+        print ("the user id")
+        print (login_session.get('user_id'))
+        print (item.user_id)
         session.add(item)
         session.commit()
         flash("New item %s created." % item.name)
@@ -256,6 +272,10 @@ def editItem(category_id, item_id):
     item = session.query(Item).filter_by(id=item_id).one()
     user_id = login_session.get('user_id')
     if item.user_id != user_id:
+        print ("user on this item is")
+        print (item.user_id)
+        print ("logged in user is")
+        print (login_session['user_id'])
         flash("You are not authorized to edit %s" % item.name)
         return redirect(url_for('showItems', category_id=category_id))
     if request.method == 'POST':
@@ -282,7 +302,7 @@ def deleteItem(category_id, item_id):
         return redirect('/login')
     category = session.query(Category).filter_by(id=category_id).one()
     item = session.query(Item).filter_by(id=item_id).one()
-    user_id = login_session.get('user_id')
+    user_id = login_session['user_id']
     if item.user_id != user_id:
         flash("You are not authorized to delete %s" % item.name)
         return redirect(url_for('showItems', category_id=category_id))
