@@ -250,6 +250,10 @@ def editItem(category_id, item_id):
         return redirect('/login')
     category = session.query(Category).filter_by(id=category_id).one()
     item = session.query(Item).filter_by(id=item_id).one()
+    user_id = login_session.get('user_id')
+    if item.user_id != user_id:
+        flash("You are not authorized to edit %s" % item.name)
+        return redirect(url_for('showItems', category_id=category_id))
     if request.method == 'POST':
         if request.form['name']:
             item.name = request.form['name']
@@ -274,6 +278,10 @@ def deleteItem(category_id, item_id):
         return redirect('/login')
     category = session.query(Category).filter_by(id=category_id).one()
     item = session.query(Item).filter_by(id=item_id).one()
+    user_id = login_session.get('user_id')
+    if item.user_id != user_id:
+        flash("You are not authorized to delete %s" % item.name)
+        return redirect(url_for('showItems', category_id=category_id))
     if request.method == 'POST':
         session.delete(item)
         session.commit()
