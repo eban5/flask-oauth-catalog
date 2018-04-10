@@ -61,7 +61,7 @@ category9 = Category(name="Hockey")
 session.add(category9)
 session.commit()
 
-item1 = Item(user_id=1, name="Stick", description="Interdum odio dignissim in nisi metus\
+item1 = Item(name="Stick", description="Interdum odio dignissim in nisi metus\
              , a elit sit dis cubilia, fringilla praesent pulvinar porta.\
              Sodales hac bibendum tincidunt risus mus himenaeos erat ac, \
              mollis semper integer tempor lacus turpis libero, ridiculus \
@@ -69,13 +69,13 @@ item1 = Item(user_id=1, name="Stick", description="Interdum odio dignissim in ni
 session.add(item1)
 session.commit()
 
-item2 = Item(user_id=1, name="Goggles",
+item2 = Item(name="Goggles",
              description="Primis dignissim mattis erat bibendum eu arcu quis\
               cursus", category=category5)
 session.add(item2)
 session.commit()
 
-item3 = Item(user_id=1, name="Snowboard",
+item3 = Item(name="Snowboard",
              description="Curae feugiat netus auctor lacus",
              category=category5)
 session.add(item3)

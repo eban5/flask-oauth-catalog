@@ -212,7 +212,10 @@ def showItems(category_id):
     """
     category = session.query(Category).filter_by(id=category_id).one()
     items = session.query(Item).filter_by(category_id=category_id).all()
-    return render_template('item.html', category=category, items=items)
+    if 'username' not in login_session:
+        return render_template('publicitems.html', items = items)
+    else:
+        return render_template('item.html', category=category, items=items)
     # return "This page is the item for category %s" % category_id
 
 
@@ -228,7 +231,7 @@ def newItem(category_id):
             name=request.form['name'],
             description=request.form['description'],
             category_id=category_id,
-            user_id = login_session['user_id'])
+            user_id = login_session.get('user_id'))
         session.add(item)
         session.commit()
         flash("New item %s created." % item.name)
