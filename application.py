@@ -174,9 +174,6 @@ def gdisconnect():
         del login_session['username']
         del login_session['email']
         del login_session['picture']
-        # response = make_response(json.dumps('Successfully disconnected.'), 200)
-        # response.headers['Content-Type'] = 'application/json'
-        # return response
         flash("You have been successfully logged out.")
         return redirect('/catalog')
     else:
@@ -186,8 +183,6 @@ def gdisconnect():
         return response
 
 # User Helper Functions
-
-
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session[
                    'email'], picture=login_session['picture'])
@@ -233,7 +228,6 @@ def showItems(category_id):
         return render_template('publicitems.html', items = items)
     else:
         return render_template('item.html', category=category, items=items)
-    # return "This page is the item for category %s" % category_id
 
 
 @app.route('/catalog/<int:category_id>/items/new', methods=['GET', 'POST'])
@@ -249,9 +243,6 @@ def newItem(category_id):
             description=request.form['description'],
             category_id=category_id,
             user_id = login_session['user_id'])
-        print ("the user id")
-        print (login_session.get('user_id'))
-        print (item.user_id)
         session.add(item)
         session.commit()
         flash("New item %s created." % item.name)
@@ -272,10 +263,6 @@ def editItem(category_id, item_id):
     item = session.query(Item).filter_by(id=item_id).one()
     user_id = login_session.get('user_id')
     if item.user_id != user_id:
-        print ("user on this item is")
-        print (item.user_id)
-        print ("logged in user is")
-        print(login_session.get('user_id'))
         flash("You are not authorized to edit %s" % item.name)
         return redirect(url_for('showItems', category_id=category_id))
     if request.method == 'POST':
@@ -314,11 +301,8 @@ def deleteItem(category_id, item_id):
     else:
         return render_template('deleteItem.html',
                                category_id=category_id, item=item)
-        # return "This page is for deleting item %s" % item_id
 
-# Returning JSON
-
-
+# JSON endpoints
 @app.route('/catalog/JSON')
 def catalogJSON():
     """
