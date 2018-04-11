@@ -275,7 +275,7 @@ def editItem(category_id, item_id):
         print ("user on this item is")
         print (item.user_id)
         print ("logged in user is")
-        print (login_session['user_id'])
+        print(login_session.get('user_id'))
         flash("You are not authorized to edit %s" % item.name)
         return redirect(url_for('showItems', category_id=category_id))
     if request.method == 'POST':
